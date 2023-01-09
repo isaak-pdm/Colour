@@ -4,7 +4,7 @@
 ## Options
 -h, --help: show the help message and exit
 
--c "COLOR_STR ..", --colors "COLOR_STR ..": one or more colors in hexadecimal code format
+-c "#008080 ..", --colors "#008080 ..": one or more colors in hexadecimal code format
 
 -t, --tui: show a text-based user interface to enter colors (not really needed)
 
