@@ -43,6 +43,22 @@ def generate_monochromatic(color):
     monochromatic_colors = tuple(colorsys.hls_to_rgb(hls_color[0], lightness / 100, hls_color[2])[:3] for lightness in lightness_steps)
     return monochromatic_colors
 
+def closest_color_by_hue(color):
+    colors = ["red", "purple", "blue", "teal", "green", "yellow", "red"]
+    hues = [360, 300, 240, 180, 120, 60, 0]
+
+    h, l, _ = colorsys.rgb_to_hls(*color)
+    hue = int(h * 360)
+    hue_differences = [abs(hue - h) for h in hues]
+    min_hue_difference = min(hue_differences)
+    closest_color_index = hue_differences.index(min_hue_difference)
+    closest_color = colors[closest_color_index]
+    if l < 0.3:
+        closest_color = "dark " + closest_color
+    elif l > 0.7:
+        closest_color = "light " + closest_color
+    return closest_color
+
 def main():
     parser = argparse.ArgumentParser(description='Generate color schemes from a given color.')
     parser.add_argument('-c', '--colors', nargs='*', help='one or more colors in hexadecimal code format', action='store', dest='color_str', default='')
@@ -60,7 +76,7 @@ def main():
     else:
         avg_color = tuple(sum(c) / num_colors for c in zip(*colors))
         color_hex = rgb_to_hex(avg_color)
-        print(f"The input is: {color_hex}")
+        print(f"The input is: {color_hex} ({closest_color_by_hue(avg_color)})")
         if args.web_safe:
             web_safe_color = get_nearest_web_safe_color(avg_color)
             web_safe_color_hex = rgb_to_hex(web_safe_color)
