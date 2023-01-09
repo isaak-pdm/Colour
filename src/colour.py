@@ -1,6 +1,5 @@
 import argparse
 import colorsys
-import sys
 
 from rich.console import Console
 console = Console()
@@ -13,17 +12,11 @@ def normalize_hex_code(hex_code):
     return hex_code
 
 def hex_to_rgb(hex_color):
-    # Normalize the hexadecimal code
-    if hex_color[0] != '#':
-        hex_color = '#' + hex_color
-    if len(hex_color) == 4:
-        hex_color = '#' + hex_color[1] * 2 + hex_color[2] * 2 + hex_color[3] * 2
-    
-    # Convert the hexadecimal code to RGB
+    hex_color = normalize_hex_code(hex_color)
     return tuple(int(b) / 255 for b in bytes.fromhex(hex_color[1:]))
 
 def rgb_to_hex(rgb_color):
-    return '#{:02x}{:02x}{:02x}'.format(*(int(c * 255 + 0.5) for c in rgb_color))
+    return '#' + ''.join(hex(int(c * 255 + 0.5))[2:].zfill(2) for c in rgb_color)
 
 def get_nearest_web_safe_color(color):
     r, g, b = color
