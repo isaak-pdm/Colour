@@ -2,6 +2,9 @@ import argparse
 import colorsys
 import sys
 
+from rich.console import Console
+console = Console()
+
 def hex_to_rgb(hex_color):
     return tuple(int(b) / 255 for b in bytes.fromhex(hex_color[1:]))
 
@@ -76,7 +79,7 @@ def main():
     else:
         avg_color = tuple(sum(c) / num_colors for c in zip(*colors))
         color_hex = rgb_to_hex(avg_color)
-        print(f"The input is: {color_hex} ({closest_color_by_hue(avg_color)})")
+        console.print(f"The input is: [{color_hex}]{color_hex} ({closest_color_by_hue(avg_color)})")
         if args.web_safe:
             web_safe_color = get_nearest_web_safe_color(avg_color)
             web_safe_color_hex = rgb_to_hex(web_safe_color)
@@ -84,7 +87,7 @@ def main():
             if web_safe_color == avg_color:
                 print(f"{shorthand} is a websafe color.")
             else:
-                print(f"Closest websafe color is: {shorthand}")
+                console.print(f"Closest websafe color is: [{web_safe_color_hex}]{shorthand}")
 
     # Generate and print color schemes
     color = avg_color if not args.web_safe else web_safe_color
