@@ -4,6 +4,7 @@ import colorsys
 from rich.console import Console
 console = Console()
 
+
 def normalize_hex_code(hex_code):
     if hex_code[0] != "#":
         hex_code = "#" + hex_code
@@ -11,12 +12,15 @@ def normalize_hex_code(hex_code):
         hex_code = "#" + hex_code[1] * 2 + hex_code[2] * 2 + hex_code[3] * 2
     return hex_code
 
+
 def hex_to_rgb(hex_color):
     hex_color = normalize_hex_code(hex_color)
     return tuple(int(b) / 255 for b in bytes.fromhex(hex_color[1:]))
 
+
 def rgb_to_hex(rgb_color):
     return '#' + ''.join(hex(int(c * 255 + 0.5))[2:].zfill(2) for c in rgb_color)
+
 
 def get_nearest_web_safe_color(color):
     r, g, b = color
@@ -24,6 +28,7 @@ def get_nearest_web_safe_color(color):
     g = round(g * 255 / 51) * 51
     b = round(b * 255 / 51) * 51
     return (r / 255, g / 255, b / 255)
+
 
 def convert_web_safe_to_shorthand(color):
     # Strip the leading '#' character from the color string
@@ -34,16 +39,20 @@ def convert_web_safe_to_shorthand(color):
     else:
         return f"#{color}"
 
+
 def shift_hue(rgb_color, amount):
     h, l, s = colorsys.rgb_to_hls(*rgb_color)
     h = (h + amount) % 1.0
     return colorsys.hls_to_rgb(h, l, s)
 
+
 def generate_complementary(color):
     return (color, shift_hue(color, 0.5))
 
+
 def generate_analogous(color, spread=30):
     return (color, shift_hue(color, spread / 360), shift_hue(color, -spread / 360))
+
 
 def generate_monochromatic(color):
     hls_color = colorsys.rgb_to_hls(*color)
@@ -52,6 +61,7 @@ def generate_monochromatic(color):
     lightness_steps = [6 + lightness_range * i / (lightness_steps - 1) for i in range(lightness_steps)]
     monochromatic_colors = tuple(colorsys.hls_to_rgb(hls_color[0], lightness / 100, hls_color[2])[:3] for lightness in lightness_steps)
     return monochromatic_colors
+
 
 def closest_color_by_hue(color):
     color_map = {360: "red", 300: "purple", 240: "blue", 180: "teal", 120: "green", 60: "yellow", 30: "orange", 0: "red"}
@@ -70,6 +80,7 @@ def closest_color_by_hue(color):
     if s < 0.06:
         closest_color = "white" if l > 0.9 else "grey" if l > 0.1 else "black"
     return closest_color
+
 
 def main():
     parser = argparse.ArgumentParser(description='Generate color schemes from a given color.')
@@ -102,6 +113,7 @@ def main():
         console.print("Complementary Color Scheme: " + ' '.join(["[{}]{}".format(rgb_to_hex(c),rgb_to_hex(c)) for c in generate_complementary(color)]))
         console.print("Analogous Color Scheme:", ' '.join(["[{}]{}".format(rgb_to_hex(c),rgb_to_hex(c)) for c in generate_analogous(color)]))
         print(f"Monochromatic Color Scheme: {' '.join(rgb_to_hex(c) for c in generate_monochromatic(color))}")
+
 
 if __name__ == '__main__':
     main()
