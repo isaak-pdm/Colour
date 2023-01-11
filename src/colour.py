@@ -96,13 +96,12 @@ def main():
             if web_safe_color == avg_color:
                 print(f"{shorthand} is a websafe color.")
             else:
-                console.print(f"Closest websafe color is: [{web_safe_color_hex}]{shorthand}")
-
-    # Generate and print color schemes
-    color = avg_color if not args.web_safe else web_safe_color
-    print("Complementary Color Scheme:", ' '.join(rgb_to_hex(c) for c in generate_complementary(color)))
-    print("Analogous Color Scheme:", ' '.join(rgb_to_hex(c) for c in generate_analogous(color)))
-    print(f"Monochromatic Color Scheme: {' '.join(rgb_to_hex(c) for c in generate_monochromatic(color))}")
+                print(f"Closest websafe color is: {shorthand}")
+        # Generate and print color schemes
+        color = avg_color if not args.web_safe else web_safe_color
+        console.print("Complementary Color Scheme: " + ' '.join(["[{}]{}".format(rgb_to_hex(c),rgb_to_hex(c)) for c in generate_complementary(color)]))
+        console.print("Analogous Color Scheme:", ' '.join(["[{}]{}".format(rgb_to_hex(c),rgb_to_hex(c)) for c in generate_analogous(color)]))
+        print(f"Monochromatic Color Scheme: {' '.join(rgb_to_hex(c) for c in generate_monochromatic(color))}")
 
 if __name__ == '__main__':
     main()
