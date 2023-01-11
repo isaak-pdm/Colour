@@ -55,7 +55,7 @@ def generate_monochromatic(color):
 
 def closest_color_by_hue(color):
     color_map = {360: "red", 300: "purple", 240: "blue", 180: "teal", 120: "green", 60: "yellow", 30: "orange", 0: "red"}
-    h, l, _ = colorsys.rgb_to_hls(*color)
+    h, l, s = colorsys.rgb_to_hls(*color)
     hue = int(h * 360)
     closest_hue = min(color_map.keys(), key=lambda x: abs(x - hue))
     closest_color = color_map[closest_hue]
@@ -67,6 +67,8 @@ def closest_color_by_hue(color):
         closest_color = "brown"
     if closest_color == "dark yellow":
         closest_color = "olive"
+    if s < 0.06:
+        closest_color = "white" if l > 0.9 else "grey" if l > 0.1 else "black"
     return closest_color
 
 def main():
