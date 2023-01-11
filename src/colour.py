@@ -19,7 +19,11 @@ def hex_to_rgb(hex_color):
 
 
 def rgb_to_hex(rgb_color):
-    return '#' + ''.join(hex(int(c * 255 + 0.5))[2:].zfill(2) for c in rgb_color)
+    hex_color = []
+    for c in rgb_color:
+        color = int(c * 255 + 0.5)
+        hex_color.append(hex(color)[2:].zfill(2))
+    return '#' + ''.join(hex_color)
 
 
 def get_nearest_web_safe_color(color):
@@ -51,15 +55,23 @@ def generate_complementary(color):
 
 
 def generate_analogous(color, spread=30):
-    return (color, shift_hue(color, spread / 360), shift_hue(color, -spread / 360))
+    hue1 = shift_hue(color, spread / 360)
+    hue2 = shift_hue(color, -spread / 360)
+    return (color, hue1, hue2)
 
 
 def generate_monochromatic(color):
     hls_color = colorsys.rgb_to_hls(*color)
+
+    # Calculate lightness range and steps
     lightness_range = 94 - 6
     lightness_steps = 12
-    lightness_steps = [6 + lightness_range * i / (lightness_steps - 1) for i in range(lightness_steps)]
-    monochromatic_colors = tuple(colorsys.hls_to_rgb(hls_color[0], lightness / 100, hls_color[2])[:3] for lightness in lightness_steps)
+
+    # Generate monochromatic colors
+    monochromatic_colors = [
+        colorsys.hls_to_rgb(hls_color[0], (6 + lightness_range * i / (lightness_steps - 1)) / 100, hls_color[2])[:3]
+        for i in range(lightness_steps)
+    ]
     return monochromatic_colors
 
 
@@ -89,10 +101,13 @@ def main():
     parser.add_argument('-w', '--web-safe', action='store_true', help='use web-safe colors', default=False)
     args = parser.parse_args()
 
-    color_str = ' '.join(args.color_str) if args.color_str else input("Enter one or more colors in hexadecimal code format separated by spaces: ")
-    
+    if args.color_str:
+        color_str = ' '.join(args.color_str)
+    else:
+        color_str = input("Enter one or more colors in hexadecimal code format separated by spaces: ")
+
     colors = [hex_to_rgb(c) for c in color_str.split()]
-    
+
     num_colors = len(colors)
     if num_colors == 0:
         print("No colors were entered.")
@@ -110,8 +125,8 @@ def main():
                 print(f"Closest websafe color is: {shorthand}")
         # Generate and print color schemes
         color = avg_color if not args.web_safe else web_safe_color
-        console.print("Complementary Color Scheme: " + ' '.join(["[{}]{}".format(rgb_to_hex(c),rgb_to_hex(c)) for c in generate_complementary(color)]))
-        console.print("Analogous Color Scheme:", ' '.join(["[{}]{}".format(rgb_to_hex(c),rgb_to_hex(c)) for c in generate_analogous(color)]))
+        console.print("Complementary Color Scheme: " + ' '.join(["[{}]{}".format(rgb_to_hex(c), rgb_to_hex(c)) for c in generate_complementary(color)]))
+        console.print("Analogous Color Scheme:", ' '.join(["[{}]{}".format(rgb_to_hex(c), rgb_to_hex(c)) for c in generate_analogous(color)]))
         print(f"Monochromatic Color Scheme: {' '.join(rgb_to_hex(c) for c in generate_monochromatic(color))}")
 
 
