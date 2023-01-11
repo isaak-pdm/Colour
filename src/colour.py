@@ -139,6 +139,12 @@ def main():
             else:
                 console.print(f"{name} {color_scheme_string}")
 
+        monochromatic_colors = generate_monochromatic(color)
+        dark_mode_background = rgb_to_hex(monochromatic_colors[1])
+        light_mode_background = rgb_to_hex(monochromatic_colors[-2])
+        console.print(f"Dark Mode Background: [{light_mode_background} on {dark_mode_background}]" + dark_mode_background)
+        console.print(f"Light Mode Background: [{dark_mode_background} on {light_mode_background}]" + light_mode_background)
+
 
 if __name__ == '__main__':
     main()
