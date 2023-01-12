@@ -124,7 +124,7 @@ def main():
     if args.color_str:
         color_str = ' '.join(args.color_str)
     else:
-        color_str = input("Enter hex colors (separated by spaces): ")
+        color_str = input("Enter colors (hex codes separated by spaces): ")
 
     colors = [hex_to_rgb(c) for c in color_str.split()]
 
