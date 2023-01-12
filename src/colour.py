@@ -95,10 +95,29 @@ def closest_color_by_hue(color):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate color schemes from a given color.')
-    parser.add_argument('-c', '--colors', nargs='*', help='one or more colors in hexadecimal code format', action='store', dest='color_str', default='')
-    parser.add_argument('-t', '--tui', action='store_true', help='show a text-based user interface to enter colors', default=False)
-    parser.add_argument('-w', '--web-safe', action='store_true', help='use web-safe colors', default=False)
+    parser = argparse.ArgumentParser(
+        description='Generate color schemes from a given color.')
+
+    parser.add_argument(
+        '-c', '--colors',
+        nargs='*',
+        help='one or more colors in hexadecimal code format',
+        action='store',
+        dest='color_str',
+        default='')
+
+    parser.add_argument(
+        '-t', '--tui',
+        help='show a text-based user interface to enter colors',
+        action='store_true',
+        default=False)
+
+    parser.add_argument(
+        '-w', '--web-safe',
+        help='use web-safe colors',
+        action='store_true',
+        default=False)
+
     args = parser.parse_args()
 
     if args.color_str:
@@ -126,8 +145,8 @@ def main():
 
         # Generate and print color schemes
         color = avg_color if not args.web_safe else web_safe_color
-        color_schemes = [("Complementary Color Scheme:", generate_complementary(color)), 
-                 ("Analogous Color Scheme:", generate_analogous(color)), 
+        color_schemes = [("Complementary Color Scheme:", generate_complementary(color)),
+                 ("Analogous Color Scheme:", generate_analogous(color)),
                  ("Monochromatic Color Scheme:", generate_monochromatic(color))]
 
         for name, colors in color_schemes:
@@ -140,10 +159,10 @@ def main():
                 console.print(f"{name} {color_scheme_string}")
 
         monochromatic_colors = generate_monochromatic(color)
-        dark_mode_background = rgb_to_hex(monochromatic_colors[1])
-        light_mode_background = rgb_to_hex(monochromatic_colors[-2])
-        console.print(f"Dark Mode Background: [{light_mode_background} on {dark_mode_background}]" + dark_mode_background)
-        console.print(f"Light Mode Background: [{dark_mode_background} on {light_mode_background}]" + light_mode_background)
+        dm = rgb_to_hex(monochromatic_colors[1])
+        lm = rgb_to_hex(monochromatic_colors[-2])
+        console.print(f"Dark Mode: [{lm} on {dm}]" + dm)
+        console.print(f"Light Mode: [{dm} on {lm}]" + lm)
 
 
 if __name__ == '__main__':
