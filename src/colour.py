@@ -124,7 +124,7 @@ def main():
     if args.color_str:
         color_str = ' '.join(args.color_str)
     else:
-        color_str = input("Enter one or more colors in hexadecimal code format separated by spaces: ")
+        color_str = input("Enter hex colors (separated by spaces): ")
 
     colors = [hex_to_rgb(c) for c in color_str.split()]
 
@@ -134,7 +134,8 @@ def main():
     else:
         avg_color = tuple(sum(c) / num_colors for c in zip(*colors))
         color_hex = rgb_to_hex(avg_color)
-        console.print(f"The input is: [{color_hex}]{color_hex} ({closest_color_by_hue(avg_color)})")
+        console.print(f"The input is: [{color_hex}]{color_hex}", end="")
+        console.print(f" ({closest_color_by_hue(avg_color)})")
         if args.web_safe:
             web_safe_color = get_nearest_web_safe_color(avg_color)
             web_safe_color_hex = rgb_to_hex(web_safe_color)
