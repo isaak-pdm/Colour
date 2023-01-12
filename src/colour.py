@@ -2,6 +2,7 @@ import argparse
 import colorsys
 
 from rich.console import Console
+from rich import bar
 console = Console()
 
 
@@ -142,6 +143,18 @@ def main():
                 print(f"{shorthand} is a websafe color.")
             else:
                 print(f"Closest websafe color is: {shorthand}")
+
+        # RGB percent bar chart
+        r, g, b = avg_color
+        r_bar = bar.Bar(100, 0, avg_color[0]*100, width=50, color="red", bgcolor="#4a4b4f")
+        g_bar = bar.Bar(100, 0, avg_color[1]*100, width=50, color="green", bgcolor="#4a4b4f")
+        b_bar = bar.Bar(100, 0, avg_color[2]*100, width=50, color="blue", bgcolor="#4a4b4f")
+        print("")
+        print("RGB color chart:")
+        console.print(r_bar)
+        console.print(g_bar)
+        console.print(b_bar)
+        print("")
 
         # Generate and print color schemes
         color = avg_color if not args.web_safe else web_safe_color
