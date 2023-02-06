@@ -1,5 +1,5 @@
 # Colour
- A simple tool that aims to help using Colours
+ A simple Python TUI script that aims to help creating new colour schemes
 
 ## Options
 -h, --help: show the help message and exit
